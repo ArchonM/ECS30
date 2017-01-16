@@ -29,9 +29,10 @@ bool is_valid_formatting(int num_args_read, int num_args_needed){
 	return is_valid;
 }
 int main() {
+		int a = 0;
     int vrf = 0;
     do {
         printf("balabala: ");
-        vrf = scanf("%d", &randomSeed);
+        vrf = scanf("%d", &a);
     } while (!(is_valid_formatting(vrf, 1)));
 }
