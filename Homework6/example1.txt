@@ -1,0 +1,49 @@
+Enter the number of rows and columns of your gameboard: 4 4
+
+
+
+
+=======
+Enter column for red coin: 0
+
+
+
+R
+=======
+Enter column for yellow coin: 0
+
+
+Y
+R
+=======
+Enter column for red coin: 1
+
+
+Y
+R R
+=======
+Enter column for yellow coin: 1
+
+
+Y Y
+R R
+=======
+Enter column for red coin: 2
+
+
+Y Y
+R R R
+=======
+Enter column for yellow coin: 2
+
+
+Y Y Y
+R R R
+=======
+Enter column for red coin: 3
+
+
+Y Y Y
+R R R R
+=======
+Game over: red wins.

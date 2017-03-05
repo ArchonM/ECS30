@@ -1,17 +1,32 @@
-#include<stdio.h>
-#include<math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
 
+bool is_valid_formatting(int num_args_read, int num_args_needed){
+
+	char new_line = '\n';
+	bool is_valid = true; //assume the format is correct
+	if(num_args_read != num_args_needed){ //didn't fill in all the format specifiers
+		is_valid = false;//format is not correct
+	}
+
+
+	do{
+		scanf("%c", &new_line); //read the next character from the standard input
+		if(!isspace(new_line)){ //if it isn't white space
+			is_valid = false; //extra stuff there so format isn't valid
+		}
+	}while(new_line != '\n'); //keep reading characters until you reach the new line character
+	return is_valid;
+}
 int main(){
-    int N = 100000
-    int prime[N];
-    int i, j, num = 0;
-    for(i=2; i<N; i++)
-    {  for(j=2; j<=sqrt(i); j++)
-         if( j%i==0 ) break;
-       if( j>sqrt(i) ) prime[num++] = i;
-    }
- for(i=2; i<100; i++) {
-    if( prime[i] )printf("%d ",i);
-
+  	char a = '4';
+	printf("enter a integer: ");
+    scanf("%c", &a);
+	printf("the char you just entered is %c\n",a);
+    printf("the variable die is: %d\n",atoi(&a));
  return 0;
 }

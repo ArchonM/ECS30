@@ -26,9 +26,9 @@ int main(int argc, char* argv[]){
         exit(0);
     }
     else {
-        sscanf(argv[1], "%d", &size_row);
-		sscanf(argv[2], "%d", &size_col);
-		sscanf(argv[3], "%d", &win_num);
+          sscanf(argv[1], "%d", &size_row);
+		  sscanf(argv[2], "%d", &size_col);
+		  sscanf(argv[3], "%d", &win_num);
     }
 	set_up(&gameBoard,size_row,size_col,turns);
 	PrintBoard(gameBoard,size_row,size_col);
