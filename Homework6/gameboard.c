@@ -7,13 +7,13 @@
 gameboard* gameboard_create(int numRows, int numCols) {
     if (numRows < 3 || numCols < 3) {
         fprintf(stderr, "Error: board must be at least 4x4\n");
-        exit(EXIT_FAILURE);
+        exit(0);
     }
     // Homework TODO: complete this function by adding code here
     int i = 0;
-    gameboard* result;
-    result->numRows = numRows;
-    result->numCols = numCols;
+    gameboard* result = (gameboard*)malloc(sizeof(gameboard));
+    (*result).numRows = numRows;
+    (*result).numCols = numCols;
     result->squares = (square**)malloc(numRows*sizeof(square*));
     for (i = 0; i< numRows; i++){
         result->squares[i] = (square*)malloc(numCols*sizeof(square));
@@ -196,46 +196,38 @@ void gameboard_check_square_diagonal(gameboard* board, int row, int col) {
         return;
     }
     for(i = 1; i < board->numCols; ++i){
-		if ((usrrow-i >= 0)&&(col-i >= 0)){
-			if (board->squares[usrrow][col] == board->squares[usrrow-i][col-i]){
-				n += 1;
-			}
-		}
-		else {
-			break;
-		}
-	}
-	for(i = 1; i < board->numRows; ++i){
-		if ((usrrow+i < board->numCols)&&(col+i < board->numCols)){
-			if (board->squares[usrrow][col] == board->squares[usrrow+i][col+i]){
-				n += 1;
-			}
+		if ((usrrow-i >= 0)&&(col-i >= 0)&&(board->squares[usrrow][col] == board->squares[usrrow-i][col-i])){
+			n += 1;
 		}
 		else {
 			break;
 		}
 	}
 
+	for(i = 1; i < board->numCols; ++i){
+		if ((usrrow+i < board->numRows)&&(col+i < board->numCols)&&(board->squares[usrrow][col] == board->squares[usrrow+i][col+i])){
+            n += 1;
+		}
+		else {
+			break;
+		}
+	}
 	n += 1;
     if(n>=4){
         board->state = (board->squares[usrrow][col]==RED_COIN?RED_WINS:YELLOW_WINS);
     }
     n = 0;
     for(i = 1; i < board->numCols; ++i){
-		if ((usrrow-i >= 0)&&(col-i >= 0)){
-			if (board->squares[usrrow][col] == board->squares[usrrow-i][col+i]){
-				n += 1;
-			}
+		if ((usrrow-i >= 0)&&(col+i < board->numCols)&&(board->squares[usrrow][col] == board->squares[usrrow-i][col+i])){
+			n += 1;
 		}
 		else {
 			break;
 		}
 	}
 	for(i = 1; i < board->numRows; ++i){
-		if ((usrrow+i < board->numCols)&&(col+i < board->numCols)){
-			if (board->squares[usrrow][col] == board->squares[usrrow+i][col-i]){
-				n += 1;
-			}
+		if ((usrrow+i < board->numRows)&&(col-i >= 0)&&(board->squares[usrrow][col] == board->squares[usrrow+i][col-i])){
+			n += 1;
 		}
 		else {
 			break;
@@ -250,5 +242,5 @@ void gameboard_check_square_diagonal(gameboard* board, int row, int col) {
 // changes state to RED_WINS or YELLOW_WINS
 void gameboard_declare_winner(gameboard* board, square color) {
     // Homework TODO: define this function
-    printf("Game over: %s",board->state == RED_WINS?"red wins.":board->state==YELLOW_WINS?"yellow wins.":"tie.");
+    printf("Game over: %s\n",board->state == RED_WINS?"red wins.":board->state==YELLOW_WINS?"yellow wins.":"tie.");
 }
