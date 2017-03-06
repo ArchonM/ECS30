@@ -34,13 +34,13 @@ void gameboard_destroy(gameboard* board) {
 // sets coinsInBoard to 0, state to STILL_PLAYING, and all squares to EMPTY
 void gameboard_initialize(gameboard* board) {
     int i,j;
-    board->state = 3;
+    board->state = STILL_PLAYING;
     board->coinsInBoard = 0;
 
 
     for (i = 0; i<board->numRows; i++){
         for (j = 0; j<(*board).numCols;j++){
-            board->squares[i][j] = 0;
+            board->squares[i][j] = EMPTY;
         }
     }
     // Homework TODO: define this function
@@ -52,13 +52,25 @@ square gameboard_square(const gameboard board, int row, int col) {
         return board.squares[row][col];
     } else {
         fprintf(stderr, "Error: board index %d %d out of bounds\n", row, col);
-        exit(EXIT_FAILURE);
+        exit(0);
     }
 }
 
 // attempts to insert coin into column col for player p
 bool gameboard_insert_coin(gameboard* board, int col, player p) {
     // Homework TODO: define this function
+    int i = board->numRows - 1;
+    while (gameboard_square(*board,i,col) != EMPTY&&i>0){
+        i-=1;
+    }
+    if (gameboard_square(*board,i,col)==EMPTY){
+        board->squares[i][col]=(p==RED_PLAYER?RED_COIN:YELLOW_COIN);
+        board->coinsInBoard += 1;
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 // prints the coins currently in the board
@@ -106,19 +118,137 @@ void gameboard_check_square(gameboard* board, int row, int col) {
 // check horizontal strips containing square (row, col)
 void gameboard_check_square_horizontal(gameboard* board, int row, int col) {
     // Homework TODO: define this function
+    int usrrow = 0;
+    int n=0;
+    int i;
+    while (gameboard_square(*board,usrrow,col) == EMPTY&&usrrow<board->numRows){
+        usrrow+=1;
+    }
+    if(board->squares[usrrow][col] == EMPTY){
+		return;
+	}
+    for(i = 1; i < board->numCols; ++i){
+		if ((col-i >= 0)&&(board->squares[usrrow][col] == board->squares[usrrow][col-i])){
+			n += 1;
+		}
+		else {
+			break;
+		}
+	}
+	for(i = 1; i < board->numCols; ++i){
+		if ((col+i < board->numCols)&&(board->squares[usrrow][col] == board->squares  [usrrow][col+i])){
+			n += 1;
+		}
+		else {
+			break;
+		}
+	}
+	n += 1;
+    if(n>=4){
+        board->state = (board->squares[usrrow][col]==RED_COIN?RED_WINS:YELLOW_WINS);
+    }
 }
 
 // check vertical strips containing square (row, col)
 void gameboard_check_square_vertical(gameboard* board, int row, int col) {
     // Homework TODO: define this function
+    int usrrow = 0;
+    int n=0;
+    int i;
+    while (gameboard_square(*board,usrrow,col) == EMPTY&&usrrow<board->numRows){
+        usrrow+=1;
+    }
+    if(board->squares[usrrow][col] == EMPTY){
+        return;
+    }
+    for (i = 1; i < board->numCols;++i){
+        if((usrrow-i>=0)&&(board->squares[usrrow][col]==board->squares[usrrow-i][col])){
+            n+=1;
+        }
+        else{
+            break;
+        }
+    }
+    for (i = 1; i < board->numCols;++i){
+        if((usrrow+i<board->numRows)&&(board->squares[usrrow][col]==board->squares[usrrow+i][col])){
+            n+=1;
+        }
+        else{
+            break;
+        }
+    }
+    n+=1;
+    if(n>=4){
+        board->state = (board->squares[usrrow][col]==RED_COIN?RED_WINS:YELLOW_WINS);
+    }
 }
 
 // check diagonal strips containing square (row, col)
 void gameboard_check_square_diagonal(gameboard* board, int row, int col) {
     // Homework TODO: define this function
+    int usrrow = 0;
+    int n=0;
+    int i;
+    while (gameboard_square(*board,usrrow,col) == EMPTY&&usrrow<board->numRows){
+        usrrow+=1;
+    }
+    if(board->squares[usrrow][col] == EMPTY){
+        return;
+    }
+    for(i = 1; i < board->numCols; ++i){
+		if ((usrrow-i >= 0)&&(col-i >= 0)){
+			if (board->squares[usrrow][col] == board->squares[usrrow-i][col-i]){
+				n += 1;
+			}
+		}
+		else {
+			break;
+		}
+	}
+	for(i = 1; i < board->numRows; ++i){
+		if ((usrrow+i < board->numCols)&&(col+i < board->numCols)){
+			if (board->squares[usrrow][col] == board->squares[usrrow+i][col+i]){
+				n += 1;
+			}
+		}
+		else {
+			break;
+		}
+	}
+
+	n += 1;
+    if(n>=4){
+        board->state = (board->squares[usrrow][col]==RED_COIN?RED_WINS:YELLOW_WINS);
+    }
+    n = 0;
+    for(i = 1; i < board->numCols; ++i){
+		if ((usrrow-i >= 0)&&(col-i >= 0)){
+			if (board->squares[usrrow][col] == board->squares[usrrow-i][col+i]){
+				n += 1;
+			}
+		}
+		else {
+			break;
+		}
+	}
+	for(i = 1; i < board->numRows; ++i){
+		if ((usrrow+i < board->numCols)&&(col+i < board->numCols)){
+			if (board->squares[usrrow][col] == board->squares[usrrow+i][col-i]){
+				n += 1;
+			}
+		}
+		else {
+			break;
+		}
+	}
+    n += 1;
+    if(n>=4){
+        board->state = (board->squares[usrrow][col]==RED_COIN?RED_WINS:YELLOW_WINS);
+    }
 }
 
 // changes state to RED_WINS or YELLOW_WINS
 void gameboard_declare_winner(gameboard* board, square color) {
     // Homework TODO: define this function
+    printf("Game over: %s",board->state == RED_WINS?"red wins.":board->state==YELLOW_WINS?"yellow wins.":"tie.");
 }
