@@ -16,13 +16,20 @@
 CellGrid* CellGrid_Create(int numRows, int numCols) {
     // TODO: complete this function
     int i=0;
+    int j;
     CellGrid *result = (CellGrid*)malloc(sizeof(CellGrid));
     result->numRows = numRows;
     result->numCols = numCols;
     result->grid = (Cell**)malloc(numRows*sizeof(Cell*));
-    for (i = 0; i < numCols){
+    for (i = 0; i < numCols;i++){
         result->grid[i] = (Cell*)malloc(numCols*sizeof(Cell));
+        for(j = 0;j<numRows;j++){
+            result->grid[i][j].x=i;
+            result->grid[i][j].y=j;
+            result->grid[i][j].s=OFF;
+        }
     }
+    return result;
 }
 
 /*
@@ -33,6 +40,12 @@ CellGrid* CellGrid_Create(int numRows, int numCols) {
  */
 void CellGrid_Delete(CellGrid* G) {
     // TODO: complete this function
+    int i = 0;
+    for(i = 0; i<G->numCols; i++){
+        free(G->grid[i]);
+    }
+    free(G->grid);
+    free(G);
 }
 
 
@@ -46,6 +59,7 @@ void CellGrid_Delete(CellGrid* G) {
  */
 CellState CellGrid_GetState(const CellGrid* G, int row, int col) {
     // TODO: complete this function
+    return G->grid[row][col].s;
 }
 
 /*
@@ -57,6 +71,7 @@ CellState CellGrid_GetState(const CellGrid* G, int row, int col) {
  */
 void CellGrid_SetCell(CellGrid* G, Cell C) {
     // TODO: complete this function
+    G->grid[C.x][C.y].s = C.s;
 }
 
 /*
@@ -86,6 +101,13 @@ void CellGrid_Update(CellGrid* G, int row, int col) {
  */
 bool CellGrid_Inbounds(const CellGrid* G, int row, int col) {
     // TODO: complete this function
+    if (row>=G->numRows||row<0){
+        return false;
+    }
+    if (col>=G->numCols||col<0){
+        return false;
+    }
+    return true;
 }
 
 /*
@@ -99,4 +121,12 @@ bool CellGrid_Inbounds(const CellGrid* G, int row, int col) {
 void CellGrid_Print(const CellGrid* G, FILE* fp) {
     // TODO: complete this function
     fp = stdout;
+    int i = 0;
+    int j = 0;
+    for (i=0;i<G->numRows;i++){
+        for (j = 0; j<G->numCols;j++){
+            fprintf(fp,"%s",G->grid[i][j].s==OFF?" ":G->grid[i][j].s==ON?"O":"#");
+        }
+        fprintf(fp,"\n");
+    }
 }

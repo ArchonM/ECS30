@@ -9,6 +9,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <math.h>
 
 typedef enum {OFF, ON, DYING} CellState;
 

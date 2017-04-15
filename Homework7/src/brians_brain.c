@@ -36,9 +36,28 @@ CellGrid* FirstGeneration(int numRows, int numCols, List* seedCells) {
  *      Calculates the game state of the generation directly
  *      after *generation and returns it
  */
-
-CellGrid* NextGeneration(CellGrid* generation) {
-    // TODO: complete this function
+CellGrid* NextGeneration(CellGrid* generation){
+    int i,j;
+    List* neighbor_list;
+    int count=0;
+    CellGrid* result = CellGrid_Create(generation->numRows, generation->numCols);
+    for (i = 0; i < generation->numRows;i++){
+        for (j = 0; j < generation->numCols;j++){
+            CellGrid_SetCell(result, generation->grid[i][j]);
+            if(CellIsOn(generation, i, j)||Cell_IsDying(generation->grid[i][j])){
+                CellGrid_Update(result, i, j);
+            }
+            else{
+                neighbor_list=GetNeighboringCells(generation->grid[i][j],generation);
+                count = CountOnNeighborCells(generation,neighbor_list);
+                if(count == 2){
+                    result->grid[i][j].s=ON;
+                }
+                List_Delete(neighbor_list);
+            }
+        }
+    }
+    return result;
 }
 
 /*
@@ -72,6 +91,19 @@ bool CellIsOn(CellGrid* generation, int row, int col) {
 List* GetNeighboringCells(Cell cell, CellGrid* generation) {
     // TODO: complete this function
     // Hint: Use List_Create to instantiate the list and List_PushFront to add elements to the list
+    int m,n,i,j;
+    m=n=0;
+    i = cell.x;
+    j = cell.y;
+    List* list = List_Create();
+    for (m=-1;m<2;m++){
+        for (n=-1;n<2;n++){
+            if(CellGrid_Inbounds(generation,i+m,j+n)){
+                List_PushFront(list,generation->grid[i+m][j+n]);
+            }
+        }
+    }
+    return list;
 }
 
 /*

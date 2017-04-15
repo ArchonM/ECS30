@@ -14,6 +14,7 @@
  * Summary:
  *      Initializes a Cell to (x,y)
  */
+
 Cell Cell_Create(int x, int y, CellState s) {
     Cell result;
     result.x = x;
@@ -35,22 +36,16 @@ Cell Cell_Create(int x, int y, CellState s) {
  */
 bool Cell_AreNeighbors(Cell C1, Cell C2) {
     // TODO: complete this function
-    if((C1.x - C2.X >= -1)&&(C1.x - C2.X <= 1)){
-        if((C1.x - C2.x >= -1)&&(C1.y - C2.y <= 1)){
-            if((C1.x == C2.x)&&(C1.y == C2.y)){
-                return false;
-            }
-            else{
-                return true;
-            }
-        }
-        else{
-            return true;
-        }
+    if(C1.x-C2.x != -1 && C1.x-C2.x != 1 && C1.x-C2.x != 0){
+        return false;
     }
-    else{
-        return true;
+    if(C1.y-C2.y != -1 && C1.y-C2.y != 1 && C1.y-C2.y != 0){
+        return false;
     }
+    if(C1.x==C2.x && C1.y==C2.y){
+        return false;
+    }
+    return true;
 }
 
 /*
