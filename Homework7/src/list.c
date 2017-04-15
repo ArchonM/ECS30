@@ -90,9 +90,9 @@ int List_PushFront(List* list, Cell data) {
  */
 void List_Print(List* list) {
     // TODO: complete this function
-    int i = 0;
-    for (i = 0; i < list->size;i++){
-        printf("Cell:(%d,%d) %s\n",list->head)
+    ListNode* p = (ListNode*)malloc(sizeof(ListNode));
+    for(p=list->head;p!=NULL;p=p->next){
+        
     }
 }
 
