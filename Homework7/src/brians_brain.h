@@ -58,7 +58,7 @@ bool CellIsOn(CellGrid* generation, int row, int col);
  *      Calculates neighboring Cells of *generation at coord and
  *		returns them as a List
  */
-List* GetNeighboringCells(Cell coord, CellGrid* generation);
+List* GetNeighboringCells(Cell cell, CellGrid* generation);
 
 /*
  * Input:
